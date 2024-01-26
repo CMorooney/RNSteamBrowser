@@ -4,12 +4,11 @@ import {
   RAWGGameFromSearch,
   RAWGGame,
 } from '../models/rawgModels';
+import {RAWG_API_KEY} from '@env';
 
 const client = axios.create({
   baseURL: 'https://api.rawg.io/api',
 });
-
-const api_key = '';
 
 export const getByQuery = async (
   query: string,
@@ -17,7 +16,7 @@ export const getByQuery = async (
   try {
     const res = await client.get('/games', {
       params: {
-        key: api_key,
+        key: RAWG_API_KEY,
         search: query,
       },
     });
@@ -40,7 +39,7 @@ export const getBySlugOrId = async (
 ): Promise<RAWGGame> => {
   try {
     const res = await client.get(`/games/${slugOrId}`, {
-      params: {key: api_key},
+      params: {key: RAWG_API_KEY},
     });
 
     const searchResults = res.data as RAWGGame;

@@ -5,6 +5,7 @@ import {
   SteamGame,
   SteamWishlistedGame,
 } from '../models/steamModels';
+import {STEAM_API_KEY, STEAM_ID} from '@env';
 
 const apiClient = axios.create({
   baseURL: 'https://api.steampowered.com',
@@ -13,15 +14,12 @@ const storeClient = axios.create({
   baseURL: 'https://store.steampowered.com',
 });
 
-const api_key = '';
-const steam_id = '';
-
 export const getOwnedGames = async (): Promise<SteamGame[]> => {
   try {
     const res = await apiClient.get('/IPlayerService/GetOwnedGames/v0001/', {
       params: {
-        key: api_key,
-        steamid: steam_id,
+        key: STEAM_API_KEY,
+        steamid: STEAM_ID,
         include_appinfo: true,
         format: 'json',
       },
@@ -44,7 +42,7 @@ export const getWishlist = async (): Promise<
 > => {
   try {
     const res = await storeClient.get(
-      `/wishlist/profiles/${steam_id}/wishlistdata`,
+      `/wishlist/profiles/${STEAM_ID}/wishlistdata`,
     );
     const m = new Map<number, SteamWishlistedGame>();
     for (const [k, v] of Object.entries(res.data)) {
