@@ -1,5 +1,4 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
 import 'react-native-gesture-handler';
 import store from './src/app/store';
 import {Provider} from 'react-redux';
@@ -8,26 +7,39 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import Library from './src/screens/Library';
 import Wishlist from './src/screens/Wishlist';
-import Settings from './src/screens/Settings';
 import GameDetails from './src/screens/GameDetails';
+import LibraryFilter from './src/screens/LibraryFilter';
 
 export type LibraryStackParamList = {
   Library: undefined;
   GameDetails: {name: string};
+  LibraryFilter: undefined;
 };
+
 const LibraryStack = createStackNavigator<LibraryStackParamList>();
 const LibraryScreen = () => (
   <LibraryStack.Navigator screenOptions={stackScreenOptions}>
-    <LibraryStack.Screen
-      options={{title: 'Library'}}
-      name="Library"
-      component={Library}
-    />
-    <LibraryStack.Screen
-      options={{title: 'Game Details'}}
-      name="GameDetails"
-      component={GameDetails}
-    />
+    <LibraryStack.Group>
+      <LibraryStack.Screen
+        options={{
+          title: 'Library',
+        }}
+        name="Library"
+        component={Library}
+      />
+      <LibraryStack.Screen
+        options={{title: 'Game Details'}}
+        name="GameDetails"
+        component={GameDetails}
+      />
+    </LibraryStack.Group>
+    <LibraryStack.Group screenOptions={{presentation: 'modal'}}>
+      <LibraryStack.Screen
+        options={{title: 'Library Display Settings'}}
+        name="LibraryFilter"
+        component={LibraryFilter}
+      />
+    </LibraryStack.Group>
   </LibraryStack.Navigator>
 );
 
@@ -49,12 +61,6 @@ const WishlistScreen = () => (
       component={GameDetails}
     />
   </WishlistStack.Navigator>
-);
-
-const SettingsScreen = () => (
-  <SafeAreaView>
-    <Settings />
-  </SafeAreaView>
 );
 
 const Tab = createBottomTabNavigator();
@@ -80,11 +86,6 @@ function App(): React.JSX.Element {
             options={{title: 'Wishlist'}}
             name="WishlistTab"
             component={WishlistScreen}
-          />
-          <Tab.Screen
-            options={{title: 'Settings'}}
-            name="SettingsTab"
-            component={SettingsScreen}
           />
         </Tab.Navigator>
       </NavigationContainer>

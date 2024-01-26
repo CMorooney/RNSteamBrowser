@@ -16,7 +16,14 @@ const initialState: WishlistState = {
 
 export const fetchWishlist = createAsyncThunk(
   'wishlist/fetchWishlist',
-  async () => await getWishlist(),
+  async () => {
+    const map = await getWishlist();
+    let newGames = [];
+    for (const [_, value] of map) {
+      newGames.push(value);
+    }
+    return newGames;
+  },
 );
 
 export const wishlistSlice = createSlice({
@@ -29,7 +36,7 @@ export const wishlistSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchWishlist.fulfilled, (state, action) => {
-      state.games = Array.from(action.payload.values());
+      state.games = action.payload;
       state.loading = false;
     });
     builder.addCase(fetchWishlist.rejected, state => {

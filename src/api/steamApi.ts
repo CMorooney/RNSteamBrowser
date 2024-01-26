@@ -13,8 +13,8 @@ const storeClient = axios.create({
   baseURL: 'https://store.steampowered.com',
 });
 
-const api_key = 'ENTER ONE HERE';
-const steam_id = 'ENTER ONE HERE';
+const api_key = '';
+const steam_id = '';
 
 export const getOwnedGames = async (): Promise<SteamGame[]> => {
   try {
